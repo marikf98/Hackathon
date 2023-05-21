@@ -72,5 +72,20 @@ namespace Hackathon
         {
 
         }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+            textBox9.Text = ProducerConsumer.capacityPercentage.ToString();
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+            textBox8.Text = ProducerConsumer.averageWaitingTime.ToString();
+        }
     }
 }

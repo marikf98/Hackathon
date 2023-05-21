@@ -90,9 +90,7 @@ namespace Hackathon
             // Optionally, you can hide the current form if needed
             this.Hide();
         }
-
-    }
-
+        
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             ProducerConsumer.numProducers = int.Parse(numericUpDown1.Text);
