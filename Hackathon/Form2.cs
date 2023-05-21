@@ -90,7 +90,7 @@ namespace Hackathon
 
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
-            
+            textBox7.Text = ProducerConsumer.numCarsWaiting.ToString();
         }
     }
 }
