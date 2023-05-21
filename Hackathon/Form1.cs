@@ -71,5 +71,10 @@ namespace Hackathon
         {
 
         }
+
+        private void startSimulationButton_Click(object sender, EventArgs e)
+        {
+            //add start fuction that will take to the other screen and start the fuction
+        }
     }
 }
