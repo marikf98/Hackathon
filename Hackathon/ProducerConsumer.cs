@@ -25,14 +25,14 @@ namespace Car_park_producer_consumer_problem
             this.order = order;
             for (int i = 0; i < chefs; i++)
             {
-                Thread producerThread = new Thread(() => Producer(ordersrate, false));
+                Thread producerThread = new Thread(() => Producer(cook_rate, false));
                 producerThread.Start();
             }
 
             // Create customer threads
             for (int i = 0; i < order; i++)
             {
-                Thread consumerThread = new Thread(() => Consumer(cook_rate, false));
+                Thread consumerThread = new Thread(() => Consumer(ordersrate, false));
                 consumerThread.Start();
             }
 
