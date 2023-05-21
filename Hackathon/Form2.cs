@@ -28,6 +28,11 @@ namespace Hackathon
             Chefs = chefs;
             this.production_rate = production_rate;
             this.chefs_rate = chefs_rate;
+            stopwatch.Start();
+
+            // Start the Timer
+            timer1.Start();
+
         }
 
 
@@ -39,12 +44,10 @@ namespace Hackathon
 
         private void startSimulationButton_Click(object sender, EventArgs e)
         {
-            stopwatch.Start();
             // Your simulation or program code goes here
-
-            stopwatch.Stop();
-            double seconds = stopwatch.Elapsed.TotalSeconds;
-            textBox10.Text = seconds.ToString("F2"); // Displaying the runtime with 2 decimal places
+            
+         
+            
 
         }
 
@@ -91,6 +94,18 @@ namespace Hackathon
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
             textBox7.Text = ProducerConsumer.numCarsWaiting.ToString();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            // Calculate the elapsed time in seconds
+            double seconds = stopwatch.Elapsed.TotalSeconds;
+
+            // Display the elapsed time in the textBox10
+            textBox10.Text = seconds.ToString("F2");
+            textBox9.Text = ProducerConsumer.capacityPercentage.ToString();
+            textBox8.Text = ProducerConsumer.averageWaitingTime.ToString();
+            
         }
     }
 }
