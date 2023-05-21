@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Car_park_producer_consumer_problem;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
@@ -21,6 +23,7 @@ namespace Hackathon
         private int chefs_rate;
         private ProducerConsumer producerConsumer;
 
+
         public Form2(int orders, int chefs, int production_rate, int chefs_rate)
         {
             InitializeComponent();
@@ -29,13 +32,16 @@ namespace Hackathon
             Chefs = chefs;
             this.production_rate = production_rate;
             this.chefs_rate = chefs_rate;
-            this.producerConsumer = new ProducerConsumer(orders, chefs, chefs_rate, production_rate);
+            producerConsumer = new ProducerConsumer(chefs,orders, chefs_rate, orders);
+
             stopwatch.Start();
 
             // Start the Timer
             timer1.Start();
-
+         
         }
+
+    
 
 
 
@@ -105,7 +111,7 @@ namespace Hackathon
 
             // Display the elapsed time in the textBox10
             textBox10.Text = seconds.ToString("F2");
-            textBox9.Text = this.producerConsumer.CalculateOrderPercentage().ToString();
+            textBox9.Text = this.producerConsumer.totalDishesServed.ToString();
 
 
 

@@ -6,49 +6,30 @@ namespace Car_park_producer_consumer_problem
     using System.Collections.Generic;
     using System.Threading;
     
-    internal class Program
+    internal  class ProducerConsumer
     {
-        static Queue<int> dishes = new Queue<int>();
-        static int counterSize = 10;
-        static Random random = new Random();
-        static int totalDishesOnTheCounter = 0;
-        static int totalDishesServed = 0;
-        static List<int> waitingTimes = new List<int>();
-        static int maxWaitingTime = 0;
+        public Queue<int> dishes = new Queue<int>();
+        public int counterSize = 10;
+        public int totalDishesOnTheCounter = 0;
+        public int totalDishesServed = 0;
+        public List<int> waitingTimes = new List<int>();
+        public int maxWaitingTime = 0;
+        public Random random = new Random();
 
-        
-        /*public static void Main(string[] args)
+        public ProducerConsumer(int chefs,int order, int cook_rate,int ordersrate)
         {
-            
-            Console.Write("Enter the number of chefs: ");
-            int chefs = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter the number of customers: ");
-            int customers = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter the base rate of cooking a dish (in milliseconds): ");
-            int productionRate = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter the base rate of taking the dish from the counter (in milliseconds): ");
-            int consumptionRate = int.Parse(Console.ReadLine());
-            
-            Console.Write("Enable randomness in producer rate? (Y/N): ");
-            bool enableProducerRandomness = Console.ReadLine().Equals("Y", StringComparison.OrdinalIgnoreCase);
-
-            Console.Write("Enable randomness in consumer rate? (Y/N): ");
-            bool enableConsumerRandomness = Console.ReadLine().Equals("Y", StringComparison.OrdinalIgnoreCase);
-
-            // Create chefs threads
+            this.dishes = dishes;
+            this.counterSize = counterSize;
             for (int i = 0; i < chefs; i++)
             {
-                Thread producerThread = new Thread(() => Producer(productionRate, enableProducerRandomness));
+                Thread producerThread = new Thread(() => Producer(ordersrate, false));
                 producerThread.Start();
             }
 
             // Create customer threads
-            for (int i = 0; i < customers; i++)
+            for (int i = 0; i < order; i++)
             {
-                Thread consumerThread = new Thread(() => Consumer(consumptionRate, enableConsumerRandomness));
+                Thread consumerThread = new Thread(() =>Consumer(cook_rate, false));
                 consumerThread.Start();
             }
 
@@ -56,10 +37,16 @@ namespace Car_park_producer_consumer_problem
             Thread statisticsThread = new Thread(Statistics);
             statisticsThread.Start();
 
-            Console.ReadLine();
-        }*/
+
+        }
+
+
+
+
+
         
-        static void Producer(int productionRate, bool enableRandomness)
+
+        public void Producer(int productionRate, bool enableRandomness)
         {
             while (true)
             {
@@ -69,6 +56,7 @@ namespace Car_park_producer_consumer_problem
                 // Sleep for the specified production rate with randomness if enabled
                 int sleepDuration = enableRandomness ? PoissonRandom(productionRate) : productionRate;
                 Thread.Sleep(sleepDuration);
+                dishes.Enqueue(0);
             }
         }
         
@@ -134,7 +122,7 @@ namespace Car_park_producer_consumer_problem
             }
         }*/
         
-        static void Consumer(int consumptionRate, bool enableRandomness)
+        public void Consumer(int consumptionRate, bool enableRandomness)
         {
             while (true)
             {
@@ -174,7 +162,7 @@ namespace Car_park_producer_consumer_problem
             }
         }
 
-        static void RecordWaitingTime(int waitingTime)
+        public void RecordWaitingTime(int waitingTime)
         {
             lock (dishes)
             {
@@ -182,7 +170,7 @@ namespace Car_park_producer_consumer_problem
             }
         }
         
-        static void ProduceNewDish()
+        public void ProduceNewDish()
         {
             lock (dishes)
             {
@@ -201,7 +189,7 @@ namespace Car_park_producer_consumer_problem
             }
         }
         
-        static bool TakeDishFromCounter()
+        public bool TakeDishFromCounter()
         {
             lock (dishes)
             {
@@ -228,7 +216,7 @@ namespace Car_park_producer_consumer_problem
         }
         
         
-        static void DishTaken()
+        public void DishTaken()
         {
             lock (dishes)
             {
@@ -246,7 +234,7 @@ namespace Car_park_producer_consumer_problem
         
 
         
-    static void Statistics()
+    public void Statistics()
     {
         while (true)
         {
@@ -298,7 +286,7 @@ namespace Car_park_producer_consumer_problem
         }
     }
 
-    static int PoissonRandom(double lambda)
+    public int PoissonRandom(double lambda)
     {
         double L = Math.Exp(-lambda);
         double p = 1.0;
