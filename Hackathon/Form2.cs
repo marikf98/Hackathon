@@ -41,10 +41,6 @@ namespace Hackathon
          
         }
 
-    
-
-
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -112,8 +108,14 @@ namespace Hackathon
             // Display the elapsed time in the textBox10
             textBox10.Text = seconds.ToString("F2");
             textBox9.Text = producerConsumer.capacityPercentage.ToString();
+            textBox7.Text = producerConsumer.numberOfCustomersWaitingToTakeDish.ToString();
+            textBox6.Text = producerConsumer.exponentialMean.ToString();
+            textBox11.Text = producerConsumer.exponentialVariance.ToString();
+            textBox13.Text = producerConsumer.normalVariance.ToString();
+            textBox15.Text = producerConsumer.normalMean.ToString();
+            textBox19.Text = producerConsumer.poissonMean.ToString();
+            textBox17.Text = producerConsumer.poissonVariance.ToString();
 
-            textBox7.Text= producerConsumer.dishes.Count.ToString();
         }
     }
 }

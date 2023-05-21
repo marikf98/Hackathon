@@ -17,7 +17,14 @@ namespace Car_park_producer_consumer_problem
         public Random random = new Random();
         public int order;
         public double capacityPercentage;
-
+        public double poissonMean;
+        public double poissonVariance;
+        public double normalMean;
+        public double normalVariance;
+        public double exponentialMean;
+        public double exponentialVariance;
+        public int numberOfCustomersWaitingToTakeDish;
+        
         public ProducerConsumer(int chefs,int order, int cook_rate,int ordersrate)
         {
             this.dishes = dishes;
@@ -250,7 +257,7 @@ namespace Car_park_producer_consumer_problem
             int numberOfCustomersWaitingToTakeDish = totalDishesOnTheCounter - dishesCount;
             */
             //int numberOfCustomersWaitingToTakeDish = customers - totalDishesOnTheCounter;
-            int numberOfCustomersWaitingToTakeDish = order - (int) Math.Ceiling(order * (capacityPercentage/100));
+            numberOfCustomersWaitingToTakeDish = order - (int) Math.Ceiling(order * (capacityPercentage/100));
             if (numberOfCustomersWaitingToTakeDish < 0) {
               numberOfCustomersWaitingToTakeDish = 0;
             }
@@ -267,24 +274,24 @@ namespace Car_park_producer_consumer_problem
 
         // Perform Poisson distribution analysis
         Console.WriteLine("\n--- Poisson Distribution Analysis ---");
-        double poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
-        double poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
+        poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
         Console.WriteLine($"Mean: {poissonMean:F2}");
         Console.WriteLine($"Variance: {poissonVariance:F2}");
         Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
 
         // Perform Normal distribution analysis
         Console.WriteLine("\n--- Normal Distribution Analysis ---");
-        double normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
-        double normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
+        normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
         Console.WriteLine($"Mean: {normalMean:F2}");
         Console.WriteLine($"Variance: {normalVariance:F2}");
         Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
 
         // Perform Exponential distribution analysis
         Console.WriteLine("\n--- Exponential Distribution Analysis ---");
-        double exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
-        double exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
+        exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
         Console.WriteLine($"Mean: {exponentialMean:F2}");
         Console.WriteLine($"Variance: {exponentialVariance:F2}");
         Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
