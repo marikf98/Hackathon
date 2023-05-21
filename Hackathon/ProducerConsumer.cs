@@ -1,116 +1,316 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
-namespace Hackathon
+namespace Car_park_producer_consumer_problem
 {
-    internal class Order
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    
+    internal class Program
     {
-        public int Id { get; }
+        static Queue<int> dishes = new Queue<int>();
+        static int counterSize = 10;
+        static Random random = new Random();
+        static int totalDishesOnTheCounter = 0;
+        static int totalDishesServed = 0;
+        static List<int> waitingTimes = new List<int>();
+        static int maxWaitingTime = 0;
 
-        public Order(int id)
+        
+        /*public static void Main(string[] args)
         {
-            Id = id;
+            
+            Console.Write("Enter the number of chefs: ");
+            int chefs = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter the number of customers: ");
+            int customers = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter the base rate of cooking a dish (in milliseconds): ");
+            int productionRate = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter the base rate of taking the dish from the counter (in milliseconds): ");
+            int consumptionRate = int.Parse(Console.ReadLine());
+            
+            Console.Write("Enable randomness in producer rate? (Y/N): ");
+            bool enableProducerRandomness = Console.ReadLine().Equals("Y", StringComparison.OrdinalIgnoreCase);
+
+            Console.Write("Enable randomness in consumer rate? (Y/N): ");
+            bool enableConsumerRandomness = Console.ReadLine().Equals("Y", StringComparison.OrdinalIgnoreCase);
+
+            // Create chefs threads
+            for (int i = 0; i < chefs; i++)
+            {
+                Thread producerThread = new Thread(() => Producer(productionRate, enableProducerRandomness));
+                producerThread.Start();
+            }
+
+            // Create customer threads
+            for (int i = 0; i < customers; i++)
+            {
+                Thread consumerThread = new Thread(() => Consumer(consumptionRate, enableConsumerRandomness));
+                consumerThread.Start();
+            }
+
+            // Create statistical analysis thread
+            Thread statisticsThread = new Thread(Statistics);
+            statisticsThread.Start();
+
+            Console.ReadLine();
+        }*/
+        
+        static void Producer(int productionRate, bool enableRandomness)
+        {
+            while (true)
+            {
+                // Produce an empty space
+                ProduceNewDish();
+
+                // Sleep for the specified production rate with randomness if enabled
+                int sleepDuration = enableRandomness ? PoissonRandom(productionRate) : productionRate;
+                Thread.Sleep(sleepDuration);
+            }
+        }
+        
+        /*static void Consumer(int consumptionRate, bool enableRandomness)
+        {
+            while (true)
+            {
+                // Consume a space if available, otherwise wait
+                if (TakeDishFromCounter())
+                {
+                    // Start measuring waiting time
+                    DateTime startTime = DateTime.Now;
+
+                    // Simulate parking time
+                    Thread.Sleep(consumptionRate);
+
+                    // Calculate waiting time
+                    int waitingTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
+
+                    // Record the waiting time
+                    RecordWaitingTime(waitingTime);
+
+                    // Car exits the parking lot
+                    DishTaken();
+                }
+            }
+        }*/
+        
+        /*static void Consumer(int consumptionRate, bool enableRandomness)
+        {
+            while (true)
+            {
+                lock (dishes)
+                {
+                    // Wait until a dish is available on the counter
+                    while (dishes.Count == 0)
+                    {
+                        Monitor.Wait(dishes);
+                    }
+
+                    // Consume a dish
+                    dishes.Dequeue();
+                    Console.WriteLine("Dish taken from the counter. Total dishes on the counter: " + dishes.Count + " Remaining space on the counter " + (counterSize - dishes.Count));
+
+                    // Notify waiting producers that a dish has been taken
+                    Monitor.Pulse(dishes);
+                }
+
+                // Start measuring waiting time
+                DateTime startTime = DateTime.Now;
+
+                // Simulate consumption time
+                Thread.Sleep(consumptionRate);
+
+                // Calculate waiting time
+                int waitingTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
+
+                // Record the waiting time
+                RecordWaitingTime(waitingTime);
+
+                // Car exits the parking lot
+                DishTaken();
+            }
+        }*/
+        
+        static void Consumer(int consumptionRate, bool enableRandomness)
+        {
+            while (true)
+            {
+                int dishCount;
+                lock (dishes)
+                {
+                    dishCount = dishes.Count;
+                }
+
+                if (dishCount > 0)
+                {
+                    lock (dishes)
+                    {
+                        if (dishes.Count > 0)
+                        {
+                            // Consume an empty space
+                            dishes.Dequeue();
+                            Console.WriteLine("Dish taken. Remaining free spaces on the counter: " + (counterSize - dishes.Count) + " remaining dishes " + dishes.Count);
+
+                            // Notify waiting producers that an empty space is available
+                            Monitor.Pulse(dishes);
+                        }
+                    }
+
+                    // Start measuring waiting time
+                    DateTime startTime = DateTime.Now;
+
+                    // Simulate consuming time
+                    Thread.Sleep(consumptionRate);
+
+                    // Calculate waiting time
+                    int waitingTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
+
+                    // Record the waiting time
+                    RecordWaitingTime(waitingTime);
+                }
+            }
+        }
+
+        static void RecordWaitingTime(int waitingTime)
+        {
+            lock (dishes)
+            {
+                waitingTimes.Add(waitingTime);
+            }
+        }
+        
+        static void ProduceNewDish()
+        {
+            lock (dishes)
+            {
+                // If parking lot is full, wait for a consumer to create empty space
+                while (dishes.Count >= counterSize)
+                {
+                    Monitor.Wait(dishes);
+                }
+
+                // Producer creates an empty space
+                dishes.Enqueue(0);
+                Console.WriteLine("New dish produced. Total dishes on the counter: " + dishes.Count + " Remaining space on the counter " + (counterSize -dishes.Count));
+
+                // Notify waiting consumers that an empty space is available
+                Monitor.Pulse(dishes);
+            }
+        }
+        
+        static bool TakeDishFromCounter()
+        {
+            lock (dishes)
+            {
+                /*// If parking lot is empty, wait for a producer to create an empty space
+                while (dishes.Count == 0)
+                {
+                    Monitor.Wait(dishes);
+                }*/
+                
+                if (dishes.Count == 0)
+                {
+                    return false;
+                }
+
+                // Consume an empty space
+                dishes.Dequeue();
+                Console.WriteLine("Dish taken from the counter. Total dishes on the counter: " + dishes.Count + " Remaining space on the counter " + (counterSize - dishes.Count));
+
+                // Notify waiting producers that an empty space is available
+                Monitor.Pulse(dishes);
+
+                return true;
+            }
+        }
+        
+        
+        static void DishTaken()
+        {
+            lock (dishes)
+            {
+                if (dishes.Count == 0)
+                {
+                    return;
+                }
+                totalDishesServed++;
+                Console.WriteLine("Dish taken. Remaining free spaces on the counter: " + (counterSize - dishes.Count) + "remaining dishes " + dishes.Count);
+
+                // Notify waiting producers that a space is available after a dish was taken
+                Monitor.Pulse(dishes);
+            }
+        }
+        
+
+        
+    static void Statistics()
+    {
+        while (true)
+        {
+            List<int> waitingTimesCopy;
+            lock (dishes)
+            {
+                // Calculate capacity percentage
+
+                double capacityPercentage = ((double)(dishes.Count) / counterSize) * 100;
+                int numberOfCustomersWaitingToTakeDish = totalDishesOnTheCounter - dishes.Count;
+
+                Console.WriteLine($"Capacity Percentage: {capacityPercentage:F2}%");
+                Console.WriteLine($"Number of Customers waiting to get a dish: {numberOfCustomersWaitingToTakeDish}");
+
+                // Create a copy of waitingTimes list before clearing it
+                waitingTimesCopy = new List<int>(waitingTimes);
+
+                // Reset waiting times
+                waitingTimes.Clear();
+            }
+
+
+            // Perform Poisson distribution analysis
+            Console.WriteLine("\n--- Poisson Distribution Analysis ---");
+            double poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+            double poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
+            Console.WriteLine($"Mean: {poissonMean:F2}");
+            Console.WriteLine($"Variance: {poissonVariance:F2}");
+            Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
+
+            // Perform Normal distribution analysis
+            Console.WriteLine("\n--- Normal Distribution Analysis ---");
+            double normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+            double normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
+            Console.WriteLine($"Mean: {normalMean:F2}");
+            Console.WriteLine($"Variance: {normalVariance:F2}");
+            Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
+
+            // Perform Exponential distribution analysis
+            Console.WriteLine("\n--- Exponential Distribution Analysis ---");
+            double exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+            double exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
+            Console.WriteLine($"Mean: {exponentialMean:F2}");
+            Console.WriteLine($"Variance: {exponentialVariance:F2}");
+            Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
+
+            // Wait for 5 seconds before displaying statistics again
+            Thread.Sleep(5000);
         }
     }
 
-    internal class ProducerConsumer
+    static int PoissonRandom(double lambda)
     {
-        private int orders;
-        private int chefs;
-        private int rate_cook;
-        private int rate_eating;
-        private int bufferSize;
-        private Queue<Order> ordersQueue;
-        private object lockObject = new object();
+        double L = Math.Exp(-lambda);
+        double p = 1.0;
+        int k = 0;
 
-        public ProducerConsumer(int orders, int chefs, int rate_cook, int rate_eating)
+        do
         {
-            this.orders = orders;
-            this.chefs = chefs;
-            this.rate_cook = rate_cook;
-            this.rate_eating = rate_eating;
-            this.bufferSize = chefs * 2;
-            ordersQueue = new Queue<Order>();
-        }
+            k++;
+            p *= random.NextDouble();
+        } while (p > L);
 
-        public void Start()
-        {
-            Task.Run(Produce);
-            Task.Run(Consume);
-        }
-
-        private void Produce()
-        {
-            for (int i = 0; i < orders; i++)
-            {
-                // Produce an order
-                Order order = new Order(i + 1);
-
-                // Add the order to the buffer
-                AddToBuffer(order);
-
-                // Sleep for a while before producing the next order
-                Thread.Sleep(rate_cook);
-            }
-        }
-
-        private void Consume()
-        {
-            int consumedOrders = 0;
-
-            while (consumedOrders < orders)
-            {
-                Order order = null;
-
-                lock (lockObject)
-                {
-                    if (ordersQueue.Count > 0)
-                        order = ordersQueue.Dequeue();
-                }
-
-                if (order != null)
-                {
-                    // Process the order (e.g., chefs start cooking or customers start eating)
-                    Console.WriteLine("Order {0} is being consumed.", order.Id);
-
-                    // Sleep for a while before consuming the next order
-                    Thread.Sleep(rate_eating);
-
-                    consumedOrders++;
-                }
-            }
-        }
-
-        private void AddToBuffer(Order order)
-        {
-            lock (lockObject)
-            {
-                // Wait until there is space in the buffer
-                while (ordersQueue.Count >= bufferSize)
-                {
-                    Monitor.Wait(lockObject);
-                }
-
-                // Add the order to the buffer
-                ordersQueue.Enqueue(order);
-
-                // Notify waiting threads that an order is added to the buffer
-                Monitor.PulseAll(lockObject);
-            }
-        }
-
-        public double CalculateOrderPercentage()
-        {
-            lock (lockObject)
-            {
-                int bufferCount = ordersQueue.Count;
-                double percentage = (double)bufferCount / bufferSize * 100;
-                return percentage;
-            }
-        }
-
-
+        return k - 1;
+    } 
     }
 }
