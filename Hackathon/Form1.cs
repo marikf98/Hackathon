@@ -82,7 +82,7 @@ namespace Hackathon
         {
 
 
-            Form2 form2 = new Form2((int)numericUpDown1.Value, (int)numericUpDown2.Value, (int)numericUpDown3.Value, (int)numericUpDown4.Value);
+            Form2 form2 = new Form2((int)numericUpDown1.Value, (int)numericUpDown2.Value, ((int)numericUpDown3.Value * 1000), ((int)numericUpDown4.Value) * 1000);
 
 
             // Display the new form

@@ -16,6 +16,7 @@ namespace Car_park_producer_consumer_problem
         public int maxWaitingTime = 0;
         public Random random = new Random();
         public int order;
+        public double capacityPercentage;
 
         public ProducerConsumer(int chefs,int order, int cook_rate,int ordersrate)
         {
@@ -243,7 +244,7 @@ namespace Car_park_producer_consumer_problem
             dishesCount = dishes.Count;
 
             // Calculate capacity percentage
-            double capacityPercentage = ((double)dishesCount / counterSize) * 100;
+            capacityPercentage = ((double)dishesCount / counterSize) * 100;
 
             // Calculate the number of customers waiting to get a dish
             /*
