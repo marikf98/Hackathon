@@ -53,7 +53,10 @@ namespace Hackathon
         private void startSimulationButton_Click(object sender, EventArgs e)
         {
             // Your simulation or program code goes here
+
+            Application.Exit();
             
+
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
