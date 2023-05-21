@@ -25,14 +25,14 @@ namespace Car_park_producer_consumer_problem
             this.order = order;
             for (int i = 0; i < chefs; i++)
             {
-                Thread producerThread = new Thread(() => Producer(ordersrate, false));
+                Thread producerThread = new Thread(() => Producer(cook_rate, false));
                 producerThread.Start();
             }
 
             // Create customer threads
             for (int i = 0; i < order; i++)
             {
-                Thread consumerThread = new Thread(() =>Consumer(cook_rate, false));
+                Thread consumerThread = new Thread(() =>Consumer(ordersrate, false));
                 consumerThread.Start();
             }
 
@@ -45,7 +45,7 @@ namespace Car_park_producer_consumer_problem
 
 
 
-        public void Producer(int productionRate, bool enableRandomness)
+        void Producer(int productionRate, bool enableRandomness)
         {
             while (true)
             {
@@ -56,6 +56,7 @@ namespace Car_park_producer_consumer_problem
                 int sleepDuration = enableRandomness ? PoissonRandom(productionRate) : productionRate;
                 Thread.Sleep(sleepDuration);
                 dishes.Enqueue(0);
+
             }
         }
         
@@ -161,7 +162,7 @@ namespace Car_park_producer_consumer_problem
             }
         }
 
-        public void RecordWaitingTime(int waitingTime)
+        void RecordWaitingTime(int waitingTime)
         {
             lock (dishes)
             {
@@ -169,7 +170,7 @@ namespace Car_park_producer_consumer_problem
             }
         }
         
-        public void ProduceNewDish()
+        void ProduceNewDish()
         {
             lock (dishes)
             {
@@ -188,7 +189,7 @@ namespace Car_park_producer_consumer_problem
             }
         }
         
-        public bool TakeDishFromCounter()
+        bool TakeDishFromCounter()
         {
             lock (dishes)
             {
@@ -215,7 +216,7 @@ namespace Car_park_producer_consumer_problem
         }
         
         
-        public void DishTaken()
+        void DishTaken()
         {
             lock (dishes)
             {
@@ -230,10 +231,8 @@ namespace Car_park_producer_consumer_problem
                 Monitor.Pulse(dishes);
             }
         }
-        
-
-        
-     void Statistics()
+    
+    void Statistics()
     {
     while (true)
     {
@@ -244,7 +243,7 @@ namespace Car_park_producer_consumer_problem
             dishesCount = dishes.Count;
 
             // Calculate capacity percentage
-            capacityPercentage = ((double)dishesCount / counterSize) * 100;
+            double capacityPercentage = ((double)dishesCount / counterSize) * 100;
 
             // Calculate the number of customers waiting to get a dish
             /*
@@ -293,9 +292,9 @@ namespace Car_park_producer_consumer_problem
         // Wait for 5 seconds before displaying statistics again
         Thread.Sleep(5000);
     }
-}
+}    
 
-    public int PoissonRandom(double lambda)
+    int PoissonRandom(double lambda)
     {
         double L = Math.Exp(-lambda);
         double p = 1.0;
