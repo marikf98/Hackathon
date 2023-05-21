@@ -23,9 +23,20 @@ namespace Hackathon
         public static int consumptionRate;
         public static bool enableProducerRandomness;
         public static bool enableConsumerRandomness;
-
-
-        static void StartSimulation()
+        public static double capacityPercentage;
+        public static int numCarsWaiting;
+        public static double averageWaitingTime;
+        public static int maxTime;
+        public static double poissonMean;
+        public static double poissonVariance;
+        public static double normalMean;
+        public static double normalVariance;
+        public static double exponentialMean;
+        public static double exponentialVariance;
+        
+        
+        
+        public static void StartSimulation()
         {
             /*            Console.Write("Enter the number of producers: ");
                         int numProducers = int.Parse(Console.ReadLine());
@@ -183,10 +194,10 @@ namespace Hackathon
                     // Calculate maximum waiting time
                     int maxTime = waitingTimes.Count > 0 ? waitingTimes.Max() : 0;
 
-                    Console.WriteLine($"Capacity Percentage: {capacityPercentage:F2}%");
+                    /*Console.WriteLine($"Capacity Percentage: {capacityPercentage:F2}%");
                     Console.WriteLine($"Number of Cars Waiting: {numCarsWaiting}");
                     Console.WriteLine($"Average Waiting Time: {averageWaitingTime:F2} milliseconds");
-                    Console.WriteLine($"Maximum Waiting Time: {maxTime} milliseconds");
+                    Console.WriteLine($"Maximum Waiting Time: {maxTime} milliseconds");*/
 
                     // Create a copy of waitingTimes list before clearing it
                     waitingTimesCopy = new List<int>(waitingTimes);
@@ -196,33 +207,85 @@ namespace Hackathon
                 }
 
                 // Perform Poisson distribution analysis
+                /*
                 Console.WriteLine("\n--- Poisson Distribution Analysis ---");
+                */
                 double poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
                 double poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
-                Console.WriteLine($"Mean: {poissonMean:F2}");
+                /*Console.WriteLine($"Mean: {poissonMean:F2}");
                 Console.WriteLine($"Variance: {poissonVariance:F2}");
-                Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
+                Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");*/
 
                 // Perform Normal distribution analysis
+                /*
                 Console.WriteLine("\n--- Normal Distribution Analysis ---");
+                */
                 double normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
                 double normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
-                Console.WriteLine($"Mean: {normalMean:F2}");
+                /*Console.WriteLine($"Mean: {normalMean:F2}");
                 Console.WriteLine($"Variance: {normalVariance:F2}");
-                Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
+                Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");*/
 
                 // Perform Exponential distribution analysis
+                /*
                 Console.WriteLine("\n--- Exponential Distribution Analysis ---");
+                */
                 double exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
                 double exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
-                Console.WriteLine($"Mean: {exponentialMean:F2}");
+                /*Console.WriteLine($"Mean: {exponentialMean:F2}");
                 Console.WriteLine($"Variance: {exponentialVariance:F2}");
-                Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
+                Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");*/
 
                 // Wait for 5 seconds before displaying statistics again
                 Thread.Sleep(5000);
             }
         }
+
+        /*
+        public double PoissonDistribution()
+        {
+            while (true)
+            {
+                Console.WriteLine("\n--- Poisson Distribution Analysis ---");
+                double poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+                double poissonVariance = waitingTimesCopy.Count > 0
+                    ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2))
+                    : 0;
+                Console.WriteLine($"Mean: {poissonMean:F2}");
+                Console.WriteLine($"Variance: {poissonVariance:F2}");
+                Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
+            }
+        }
+
+        public double NormalDistribution()
+        {
+            while (true)
+            {
+                Console.WriteLine("\n--- Normal Distribution Analysis ---");
+                double normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+                double normalVariance = waitingTimesCopy.Count > 0
+                    ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2))
+                    : 0;
+                Console.WriteLine($"Mean: {normalMean:F2}");
+                Console.WriteLine($"Variance: {normalVariance:F2}");
+                Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
+            }
+        }
+        public double ExponentialDistribution()
+        {
+            while (true)
+            {
+                Console.WriteLine("\n--- Exponential Distribution Analysis ---");
+                double exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+                double exponentialVariance = waitingTimesCopy.Count > 0
+                    ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2))
+                    : 0;
+                Console.WriteLine($"Mean: {exponentialMean:F2}");
+                Console.WriteLine($"Variance: {exponentialVariance:F2}");
+                Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
+                Thread.Sleep(5000);
+            }
+        }*/
 
         static int PoissonRandom(double lambda)
         {

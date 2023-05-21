@@ -79,7 +79,7 @@ namespace Hackathon
 
         private void startSimulationButton_Click(object sender, EventArgs e)
         {
-            //add start fuction that will take to the other screen and start the fuction
+            ProducerConsumer.StartSimulation();
 
         }
 
@@ -106,12 +106,12 @@ namespace Hackathon
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            ProducerConsumer.enableProducerRandomness = true;
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-
+            ProducerConsumer.enableConsumerRandomness = true;
         }
     }
 }
