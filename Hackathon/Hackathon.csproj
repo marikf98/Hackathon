@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +95,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\DALL_E_2023-05-21_12.09.17_-_alien_chef_pixle_art-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DALL_E_2023-05-21_12.09.17_-_alien_chef_pixle_art-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\spaceship-cruising-ufo-7176.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\spaceship.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dorm-door-opening-6038.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chattering-in-a-restaurant-6718.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\6619555-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\f2ea3f4ef0d233baef04205d81f1660f-removebg-preview.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

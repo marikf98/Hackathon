@@ -63,10 +63,57 @@ namespace Hackathon.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alien_chef_noborder {
+        internal static System.Drawing.Bitmap alien1 {
             get {
-                object obj = ResourceManager.GetObject("alien_chef_noborder", resourceCulture);
+                object obj = ResourceManager.GetObject("alien1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alien2 {
+            get {
+                object obj = ResourceManager.GetObject("alien2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap alien3 {
+            get {
+                object obj = ResourceManager.GetObject("alien3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream chattering_in_a_restaurant_6718 {
+            get {
+                return ResourceManager.GetStream("chattering_in_a_restaurant_6718", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream dorm_door_opening_6038 {
+            get {
+                return ResourceManager.GetStream("dorm_door_opening_6038", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream spaceship {
+            get {
+                return ResourceManager.GetStream("spaceship", resourceCulture);
             }
         }
     }

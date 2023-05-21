@@ -6,11 +6,16 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Media;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using ThreadState = System.Threading.ThreadState;
 
 namespace Hackathon
 {
@@ -22,6 +27,9 @@ namespace Hackathon
         private int production_rate;
         private int chefs_rate;
         private ProducerConsumer producerConsumer;
+        private List<PictureBox> chefPictureBoxes;
+        private List<PictureBox> orderPictureBoxes2;
+        private SoundPlayer restaurantSoundPlayer2;
 
 
         public Form2(int orders, int chefs, int production_rate, int chefs_rate)
@@ -32,13 +40,111 @@ namespace Hackathon
             Chefs = chefs;
             this.production_rate = production_rate;
             this.chefs_rate = chefs_rate;
-            producerConsumer = new ProducerConsumer(chefs,orders, chefs_rate, orders);
+            producerConsumer = new ProducerConsumer(chefs, orders, chefs_rate, orders);
+            chefPictureBoxes = new List<PictureBox>();
+            orderPictureBoxes2=new List<PictureBox>();
+
+            orderPictureBoxes2.Add(pictureBox11);
+            orderPictureBoxes2.Add(pictureBox7);
+            orderPictureBoxes2.Add(pictureBox6);
+            orderPictureBoxes2.Add(pictureBox2);
+            orderPictureBoxes2.Add(pictureBox9);
+            orderPictureBoxes2.Add(pictureBox8);
+            orderPictureBoxes2.Add(pictureBox3);
+            orderPictureBoxes2.Add(pictureBox12);
+            orderPictureBoxes2.Add(pictureBox10);
+            orderPictureBoxes2.Add(pictureBox4);
+            for (int i = 0; i < orderPictureBoxes2.Count; i++)
+            {
+                PictureBox chefPictureBox =  orderPictureBoxes2[i];
+                chefPictureBox.Visible = false;
+
+            }
+
+
+                // Calculate the size and spacing for each chef image
+                int imageSize = 200; // Set the desired size of the chef image
+            int spacing = 20; // Set the desired spacing between chef images
+            int totalWidth = chefs * (imageSize + spacing) - spacing; // Calculate the total width required for all chef images
+
+
+
+
+
+
+            
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Calculate the starting X position for the first chef image
+            Point point = new Point(400,300);
+            int spacer = 40;
+            int startX = 400;
+
+            for (int i = 0; i < chefs; i++)
+            {
+
+
+
+
+                Image image = Properties.Resources.alien1;
+                // Create and configure the PictureBox control
+                PictureBox chefPictureBox = new PictureBox();
+                chefPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                chefPictureBox.Size = new Size(40, 40);
+                point.X = 600 + (spacer * i);
+
+
+
+                chefPictureBox.Location = point;
+                chefPictureBox.Image= image;
+                chefPictureBox.BorderStyle = BorderStyle.Fixed3D;
+                chefPictureBox.BackColor = Color.Transparent;
+
+
+
+
+                // Add the PictureBox control to the panel and the list
+
+                chefPictureBoxes.Add(chefPictureBox);
+                this.Controls.Add(chefPictureBox);
+                chefPictureBox.BringToFront();
+               
+
+
+
+
+
+
+
+
+
+            }
+            restaurantSoundPlayer2 = new SoundPlayer(Properties.Resources.chattering_in_a_restaurant_6718);
+
+            // Set the sound player to loop
+            restaurantSoundPlayer2.PlayLooping();
+
+           
 
             stopwatch.Start();
 
             // Start the Timer
             timer1.Start();
-         
+
+
+
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -49,6 +155,7 @@ namespace Hackathon
         private void startSimulationButton_Click(object sender, EventArgs e)
         {
             // Your simulation or program code goes here
+            restaurantSoundPlayer2.Stop();
 
             Application.Exit();
             
@@ -82,7 +189,7 @@ namespace Hackathon
 
         private void textBox6_TextChanged(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         private void textBox9_TextChanged(object sender, EventArgs e)
@@ -115,7 +222,36 @@ namespace Hackathon
             textBox15.Text = producerConsumer.normalMean.ToString();
             textBox19.Text = producerConsumer.poissonMean.ToString();
             textBox17.Text = producerConsumer.poissonVariance.ToString();
+            int eater = this.producerConsumer.get_treds_id();
+
+            
+            for(int i=0; i < this.orderPictureBoxes2.Count; i++)
+            {
+                eater -= i;
+                
+                if (eater>0)
+                {
+                    orderPictureBoxes2[i].Visible = true;
+                }
+                else
+                {
+                    orderPictureBoxes2[i].Visible = false;
+                }
+            }
+         
 
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+            
+        }
+        
+
+
+
+
+
+
     }
 }

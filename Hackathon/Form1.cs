@@ -10,16 +10,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace Hackathon
 {
     public partial class Form1 : Form
     {
+        private SoundPlayer restaurantSoundPlayer;
         //private ProducerConsumer producerConsumer;
         public Form1()
         {
             InitializeComponent();
-          
+            // Initialize the restaurant sound player with the sound file from resources
+            restaurantSoundPlayer = new SoundPlayer(Properties.Resources.spaceship);
+
+            // Set the sound player to loop
+            restaurantSoundPlayer.PlayLooping();
+
             //producerConsumer = new ProducerConsumer();
         }
 
@@ -80,9 +87,13 @@ namespace Hackathon
 
         private void startSimulationButton_Click(object sender, EventArgs e)
         {
+            restaurantSoundPlayer.Stop();
+            restaurantSoundPlayer = new SoundPlayer(Properties.Resources.dorm_door_opening_6038);
+            restaurantSoundPlayer.Play();
+           
 
 
-            Form2 form2 = new Form2((int)numericUpDown1.Value, (int)numericUpDown2.Value, ((int)numericUpDown3.Value * 1000), ((int)numericUpDown4.Value) * 1000);
+            Form2 form2 = new Form2((int)numericUpDown2.Value, (int)numericUpDown1.Value, ((int)numericUpDown3.Value * 1000), ((int)numericUpDown4.Value) * 1000);
 
 
             // Display the new form
