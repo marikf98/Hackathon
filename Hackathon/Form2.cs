@@ -87,5 +87,10 @@ namespace Hackathon
         {
             textBox8.Text = ProducerConsumer.averageWaitingTime.ToString();
         }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
