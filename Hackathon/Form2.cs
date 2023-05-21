@@ -54,9 +54,6 @@ namespace Hackathon
         {
             // Your simulation or program code goes here
             
-         
-            
-
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
