@@ -112,6 +112,8 @@ namespace Hackathon
             // Display the elapsed time in the textBox10
             textBox10.Text = seconds.ToString("F2");
             textBox9.Text = producerConsumer.capacityPercentage.ToString();
+
+            textBox7.Text= producerConsumer.dishes.Count.ToString();
         }
     }
 }
