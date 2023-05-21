@@ -79,9 +79,19 @@ namespace Hackathon
 
         private void startSimulationButton_Click(object sender, EventArgs e)
         {
-            //add start fuction that will take to the other screen and start the fuction
 
+
+            Form2 form2 = new Form2((int)numericUpDown1.Value, (int)numericUpDown2.Value, (int)numericUpDown3.Value, (int)numericUpDown4.Value);
+
+
+            // Display the new form
+            form2.Show();
+
+            // Optionally, you can hide the current form if needed
+            this.Hide();
         }
+
+    }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
