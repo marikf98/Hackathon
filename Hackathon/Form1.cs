@@ -19,6 +19,7 @@ namespace Hackathon
         public Form1()
         {
             InitializeComponent();
+          
             //producerConsumer = new ProducerConsumer();
         }
 
@@ -93,23 +94,23 @@ namespace Hackathon
         
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            ProducerConsumer.numProducers = int.Parse(numericUpDown1.Text);
+           
 
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
-            ProducerConsumer.numConsumers = int.Parse(numericUpDown2.Text);
+            
         }
 
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
-            ProducerConsumer.productionRate = int.Parse(numericUpDown3.Text);
+            
         }
 
         private void numericUpDown4_ValueChanged(object sender, EventArgs e)
         {
-            ProducerConsumer.consumptionRate = int.Parse(numericUpDown4.Text);
+           
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

@@ -19,6 +19,7 @@ namespace Hackathon
         private int Chefs;
         private int production_rate;
         private int chefs_rate;
+        private ProducerConsumer producerConsumer;
 
         public Form2(int orders, int chefs, int production_rate, int chefs_rate)
         {
@@ -28,6 +29,7 @@ namespace Hackathon
             Chefs = chefs;
             this.production_rate = production_rate;
             this.chefs_rate = chefs_rate;
+            this.producerConsumer = new ProducerConsumer(orders, chefs, chefs_rate, production_rate);
             stopwatch.Start();
 
             // Start the Timer
@@ -83,17 +85,17 @@ namespace Hackathon
 
         private void textBox9_TextChanged(object sender, EventArgs e)
         {
-            textBox9.Text = ProducerConsumer.capacityPercentage.ToString();
+           
         }
 
         private void textBox8_TextChanged(object sender, EventArgs e)
         {
-            textBox8.Text = ProducerConsumer.averageWaitingTime.ToString();
+            
         }
 
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
-            textBox7.Text = ProducerConsumer.numCarsWaiting.ToString();
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -103,9 +105,11 @@ namespace Hackathon
 
             // Display the elapsed time in the textBox10
             textBox10.Text = seconds.ToString("F2");
-            textBox9.Text = ProducerConsumer.capacityPercentage.ToString();
-            textBox8.Text = ProducerConsumer.averageWaitingTime.ToString();
-            
+            textBox9.Text = this.producerConsumer.CalculateOrderPercentage().ToString();
+
+
+
+
         }
     }
 }
