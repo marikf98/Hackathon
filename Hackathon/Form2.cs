@@ -244,8 +244,8 @@ namespace Hackathon
             textBox15.Text = producerConsumer.normalMean.ToString();
             textBox19.Text = producerConsumer.poissonMean.ToString();
             textBox17.Text = producerConsumer.poissonVariance.ToString();
-            int eater = this.producerConsumer.get_treds_id();
-
+            //int eater = this.producerConsumer.get_treds_id();
+            int eater = producerConsumer.order;
             
             for(int i=0; i < this.orderPictureBoxes2.Count; i++)
             {
