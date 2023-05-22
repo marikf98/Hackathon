@@ -65,71 +65,9 @@ namespace Car_park_producer_consumer_problem
                 int sleepDuration = enableRandomness ? PoissonRandom(productionRate) : productionRate;
                 Thread.Sleep(sleepDuration);
                 dishes.Enqueue(0);
-
             }
         }
-
-        /*static void Consumer(int consumptionRate, bool enableRandomness)
-        {
-            while (true)
-            {
-                // Consume a space if available, otherwise wait
-                if (TakeDishFromCounter())
-                {
-                    // Start measuring waiting time
-                    DateTime startTime = DateTime.Now;
-
-                    // Simulate parking time
-                    Thread.Sleep(consumptionRate);
-
-                    // Calculate waiting time
-                    int waitingTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
-
-                    // Record the waiting time
-                    RecordWaitingTime(waitingTime);
-
-                    // Car exits the parking lot
-                    DishTaken();
-                }
-            }
-        }*/
-
-        /*static void Consumer(int consumptionRate, bool enableRandomness)
-        {
-            while (true)
-            {
-                lock (dishes)
-                {
-                    // Wait until a dish is available on the counter
-                    while (dishes.Count == 0)
-                    {
-                        Monitor.Wait(dishes);
-                    }
-
-                    // Consume a dish
-                    dishes.Dequeue();
-                    Console.WriteLine("Dish taken from the counter. Total dishes on the counter: " + dishes.Count + " Remaining space on the counter " + (counterSize - dishes.Count));
-
-                    // Notify waiting producers that a dish has been taken
-                    Monitor.Pulse(dishes);
-                }
-
-                // Start measuring waiting time
-                DateTime startTime = DateTime.Now;
-
-                // Simulate consumption time
-                Thread.Sleep(consumptionRate);
-
-                // Calculate waiting time
-                int waitingTime = (int)(DateTime.Now - startTime).TotalMilliseconds;
-
-                // Record the waiting time
-                RecordWaitingTime(waitingTime);
-
-                // Car exits the parking lot
-                DishTaken();
-            }
-        }*/
+        
 
         void Consumer(int consumptionRate, bool enableRandomness)
         {
@@ -241,68 +179,128 @@ namespace Car_park_producer_consumer_problem
             }
         }
 
+        // void Statistics()
+        // {
+        //     while (true)
+        //     {
+        //         List<int> waitingTimesCopy;
+        //         int dishesCount;
+        //         lock (dishes)
+        //         {
+        //             dishesCount = dishes.Count;
+        //
+        //             // Calculate capacity percentage
+        //             double capacityPercentage = ((double)dishesCount / counterSize) * 100;
+        //
+        //             // Calculate the number of customers waiting to get a dish
+        //
+        //             numberOfCustomersWaitingToTakeDish = order - (int)Math.Ceiling(order * (capacityPercentage / 100));
+        //             if (numberOfCustomersWaitingToTakeDish < 0)
+        //             {
+        //                 numberOfCustomersWaitingToTakeDish = 0;
+        //             }
+        //
+        //             Console.WriteLine($"Capacity Percentage: {capacityPercentage:F2}%");
+        //             Console.WriteLine($"Number of Customers waiting to get a dish: {numberOfCustomersWaitingToTakeDish}");
+        //
+        //             // Create a copy of waitingTimes list before clearing it
+        //             waitingTimesCopy = new List<int>(waitingTimes);
+        //
+        //             // Reset waiting times
+        //             waitingTimes.Clear();
+        //         }
+        //
+        //         // Perform Poisson distribution analysis
+        //         Console.WriteLine("\n--- Poisson Distribution Analysis ---");
+        //         poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        //         poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
+        //         Console.WriteLine($"Mean: {poissonMean:F2}");
+        //         Console.WriteLine($"Variance: {poissonVariance:F2}");
+        //         Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
+        //
+        //         // Perform Normal distribution analysis
+        //         Console.WriteLine("\n--- Normal Distribution Analysis ---");
+        //         normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        //         normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
+        //         Console.WriteLine($"Mean: {normalMean:F2}");
+        //         Console.WriteLine($"Variance: {normalVariance:F2}");
+        //         Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
+        //
+        //         // Perform Exponential distribution analysis
+        //         Console.WriteLine("\n--- Exponential Distribution Analysis ---");
+        //         exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        //         exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
+        //         Console.WriteLine($"Mean: {exponentialMean:F2}");
+        //         Console.WriteLine($"Variance: {exponentialVariance:F2}");
+        //         Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
+        //
+        //         // Wait for 5 seconds before displaying statistics again
+        //         Thread.Sleep(5000);
+        //     }
+        // }
+        
+
         void Statistics()
         {
-            while (true)
+         while (true)
+        {
+        List<int> waitingTimesCopy;
+        int dishesCount;
+        double capacityPercentage;
+        
+        lock (dishes)
+        {
+            dishesCount = dishes.Count;
+
+            // Calculate capacity percentage
+            capacityPercentage = ((double)dishesCount / counterSize) * 100;
+
+            // Calculate the number of customers waiting to get a dish
+            numberOfCustomersWaitingToTakeDish = order - (int)Math.Ceiling(order * (capacityPercentage / 100));
+            if (numberOfCustomersWaitingToTakeDish < 0)
             {
-                List<int> waitingTimesCopy;
-                int dishesCount;
-                lock (dishes)
-                {
-                    dishesCount = dishes.Count;
-
-                    // Calculate capacity percentage
-                    double capacityPercentage = ((double)dishesCount / counterSize) * 100;
-
-                    // Calculate the number of customers waiting to get a dish
-                    /*
-                    int numberOfCustomersWaitingToTakeDish = totalDishesOnTheCounter - dishesCount;
-                    */
-                    //int numberOfCustomersWaitingToTakeDish = customers - totalDishesOnTheCounter;
-                    numberOfCustomersWaitingToTakeDish = order - (int)Math.Ceiling(order * (capacityPercentage / 100));
-                    if (numberOfCustomersWaitingToTakeDish < 0)
-                    {
-                        numberOfCustomersWaitingToTakeDish = 0;
-                    }
-
-                    Console.WriteLine($"Capacity Percentage: {capacityPercentage:F2}%");
-                    Console.WriteLine($"Number of Customers waiting to get a dish: {numberOfCustomersWaitingToTakeDish}");
-
-                    // Create a copy of waitingTimes list before clearing it
-                    waitingTimesCopy = new List<int>(waitingTimes);
-
-                    // Reset waiting times
-                    waitingTimes.Clear();
-                }
-
-                // Perform Poisson distribution analysis
-                Console.WriteLine("\n--- Poisson Distribution Analysis ---");
-                poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
-                poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
-                Console.WriteLine($"Mean: {poissonMean:F2}");
-                Console.WriteLine($"Variance: {poissonVariance:F2}");
-                Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
-
-                // Perform Normal distribution analysis
-                Console.WriteLine("\n--- Normal Distribution Analysis ---");
-                normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
-                normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
-                Console.WriteLine($"Mean: {normalMean:F2}");
-                Console.WriteLine($"Variance: {normalVariance:F2}");
-                Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
-
-                // Perform Exponential distribution analysis
-                Console.WriteLine("\n--- Exponential Distribution Analysis ---");
-                exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
-                exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
-                Console.WriteLine($"Mean: {exponentialMean:F2}");
-                Console.WriteLine($"Variance: {exponentialVariance:F2}");
-                Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
-
-                // Wait for 5 seconds before displaying statistics again
-                Thread.Sleep(5000);
+                numberOfCustomersWaitingToTakeDish = 0;
             }
+
+            Console.WriteLine($"Capacity Percentage: {capacityPercentage:F2}%");
+            Console.WriteLine($"Number of Customers waiting to get a dish: {numberOfCustomersWaitingToTakeDish}");
+
+            // Create a copy of waitingTimes list before clearing it
+            waitingTimesCopy = new List<int>(waitingTimes);
+
+            // Reset waiting times
+            waitingTimes.Clear();
         }
+
+        // Perform Poisson distribution analysis
+        Console.WriteLine("\n--- Poisson Distribution Analysis ---");
+        poissonMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        poissonVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - poissonMean, 2)) : 0;
+        Console.WriteLine($"Mean: {poissonMean:F2}");
+        Console.WriteLine($"Variance: {poissonVariance:F2}");
+        Console.WriteLine($"Standard Deviation: {Math.Sqrt(poissonVariance):F2}");
+
+        // Perform Normal distribution analysis
+        Console.WriteLine("\n--- Normal Distribution Analysis ---");
+        normalMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        normalVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - normalMean, 2)) : 0;
+        Console.WriteLine($"Mean: {normalMean:F2}");
+        Console.WriteLine($"Variance: {normalVariance:F2}");
+        Console.WriteLine($"Standard Deviation: {Math.Sqrt(normalVariance):F2}");
+
+        // Perform Exponential distribution analysis
+        Console.WriteLine("\n--- Exponential Distribution Analysis ---");
+        exponentialMean = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average() : 0;
+        exponentialVariance = waitingTimesCopy.Count > 0 ? waitingTimesCopy.Average(t => Math.Pow(t - exponentialMean, 2)) : 0;
+        Console.WriteLine($"Mean: {exponentialMean:F2}");
+        Console.WriteLine($"Variance: {exponentialVariance:F2}");
+        Console.WriteLine($"Standard Deviation: {Math.Sqrt(exponentialVariance):F2}");
+
+        // Wait for 5 seconds before displaying statistics again
+        Thread.Sleep(5000);
+    }
+}
+
 
         int PoissonRandom(double lambda)
         {
@@ -336,8 +334,6 @@ namespace Car_park_producer_consumer_problem
             }
 
             return activeThreads;
-
-
         }
 
     }
