@@ -21,6 +21,7 @@ namespace Hackathon
 {
     public partial class Form2 : Form
     {
+
         private Stopwatch stopwatch;
         private int Orders;
         private int Chefs;
@@ -30,6 +31,8 @@ namespace Hackathon
         private List<PictureBox> chefPictureBoxes;
         private List<PictureBox> orderPictureBoxes2;
         private SoundPlayer restaurantSoundPlayer2;
+        private SoundPlayer restaurantSoundPlayer3;
+        private PictureBox smokePictureBox;
 
 
         public Form2(int orders, int chefs, int production_rate, int chefs_rate)
@@ -43,6 +46,8 @@ namespace Hackathon
             producerConsumer = new ProducerConsumer(chefs, orders, chefs_rate, orders);
             chefPictureBoxes = new List<PictureBox>();
             orderPictureBoxes2=new List<PictureBox>();
+            smokePictureBox = pictureBox5;
+            smokePictureBox.Visible = false;
 
             orderPictureBoxes2.Add(pictureBox11);
             orderPictureBoxes2.Add(pictureBox7);
@@ -156,6 +161,17 @@ namespace Hackathon
         {
             // Your simulation or program code goes here
             restaurantSoundPlayer2.Stop();
+            restaurantSoundPlayer3 = new SoundPlayer(Properties.Resources.airstrike);
+            restaurantSoundPlayer3.Play();
+            Form3 form3 = new Form3();
+            form3.Show();
+
+            // Optionally, you can hide the current form if needed
+            this.Hide();
+            
+            Thread.Sleep(15000);
+
+            // Set the sound player to loop
 
             Application.Exit();
             
@@ -246,7 +262,23 @@ namespace Hackathon
         {
             
         }
-        
+
+
+        private async void StartSmokeAnimation()
+        {
+            Label gameOverLabel = new Label();
+            gameOverLabel.Text = "Game Over";
+            gameOverLabel.Font = new Font("Arial", 100, FontStyle.Bold);
+            gameOverLabel.ForeColor = Color.White;
+            gameOverLabel.BackColor = Color.Black;
+            gameOverLabel.AutoSize = false;
+            gameOverLabel.Size = ClientSize;
+            gameOverLabel.TextAlign = ContentAlignment.MiddleCenter;
+            this.Controls.Add(gameOverLabel);
+            gameOverLabel.BringToFront();
+        }
+
+
 
 
 
