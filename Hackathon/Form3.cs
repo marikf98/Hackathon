@@ -16,7 +16,7 @@ namespace Hackathon
         public Form3()
         {
             InitializeComponent();
-            Thread.Sleep(2);
+            
 
             // Set the sound player to loop
 

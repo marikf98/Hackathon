@@ -161,19 +161,25 @@ namespace Hackathon
         {
             // Your simulation or program code goes here
             restaurantSoundPlayer2.Stop();
-            restaurantSoundPlayer3 = new SoundPlayer(Properties.Resources.airstrike);
+            restaurantSoundPlayer3 = new SoundPlayer(Properties.Resources.kl_peach_game_over_iii_142453);
             restaurantSoundPlayer3.Play();
             Form3 form3 = new Form3();
             form3.Show();
-
-            // Optionally, you can hide the current form if needed
             this.Hide();
-            
-            Thread.Sleep(15000);
+            Thread.Sleep(3000);
+           
 
             // Set the sound player to loop
 
             Application.Exit();
+
+            // Optionally, you can hide the current form if needed
+            this.Hide();
+            
+            
+
+            // Set the sound player to loop
+
             
 
         }
